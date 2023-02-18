@@ -160,11 +160,18 @@ exports.getOneComp = async(req,res,next)=>{
 }
 exports.getCompositionList = async(req,res,next)=>{
     try{
-        const compositionList = await UserModel.User.find({_id:req.userId},{_id:0,composition:1})
+        const compositionList = await UserModel.User.findOne({_id:req.userId}).select('-__v')
         res.status(200).json({
             status:'success',
             data:compositionList
         })
+    }catch (err){
+        return next(new ErrorHandler(err,400))
+    }
+}
+exports.getImage = async(req,res,next)=>{
+    try{
+        res.sendFile(`./${req.userId}/${req.params.composition}/${req.params.image}`,{root:'userData'})
     }catch (err){
         return next(new ErrorHandler(err,400))
     }

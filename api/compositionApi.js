@@ -9,5 +9,6 @@ router.delete('/deleteImage/:composition/:image',compositionController.deleteIma
 router.patch('/updateImageOrder/:composition/:image/:order',compositionController.changeImageOrder)
 router.get('/getCompositionList/',compositionController.getCompositionList)
 router.get('/getOneComp/:composition',compositionController.getOneComp)
+router.get('/getImage/:composition/:image',compositionController.getImage)
 
 module.exports = router;

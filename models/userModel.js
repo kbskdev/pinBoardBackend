@@ -82,7 +82,7 @@ const UserSchema = new mongoose.Schema({
         enum:['normal','admin']
     },
     composition:[CompositionSchema]
-})
+},{autoCreate:false})
 
 
 

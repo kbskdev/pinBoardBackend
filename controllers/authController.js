@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt')
 
 exports.login = async(req,res,next)=>{
     try {
-        let user = await User.findOne({email: req.body.email})
+        let user = await User.findOne({email: req.body.email}).select('-__v')
 
         const passwordCheck = await bcrypt.compare(req.body.password,user.password)
         if(!passwordCheck) throw 'wrong password'
