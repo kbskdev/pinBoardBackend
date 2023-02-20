@@ -93,7 +93,7 @@ exports.addImage = async(req,res,next)=> {
         upload(req,res,err=>{
             if(err) return next(new ErrorHandler(err,500))
             res.status(201).json({
-                status:'succes',
+                status:'success',
                 data:updatedComp
             })
 
