@@ -4,15 +4,15 @@ const UserModel = require('../models/userModel')
 const fs = require('fs')
 const mongoose = require('mongoose')
 
-const multerStorage = multer.diskStorage({
-    destination(req,file,cb){
-        cb(null,`userData/${req.userId}/`)
-    },
-    filename(req,file,cb){
-        const ext = file.mimetype.split('/')[1]
-        cb(null,`zdjecie.${ext}`)
-    }
-})
+// const multerStorage = multer.diskStorage({
+//     destination(req,file,cb){
+//         cb(null,`userData/${req.userId}/`)
+//     },
+//     filename(req,file,cb){
+//         const ext = file.mimetype.split('/')[1]
+//         cb(null,`zdjecie.${ext}`)
+//     }
+// })
 
 exports.addComposition= async(req,res,next)=>{
     try{
@@ -73,7 +73,8 @@ exports.deleteComposition = async (req,res,next)=>{
 
 exports.addImage = async(req,res,next)=> {
     try{
-        const newImage = await new UserModel.Image({type:'image'})
+        console.log(req.file)
+        const newImage = await new UserModel.Image({type:'image',position:{x:req.body.x,y:req.body.y}})
 
         const updatedComp = await UserModel.User.findOneAndUpdate(
             {_id: mongoose.Types.ObjectId(req.userId),'composition._id':mongoose.Types.ObjectId(req.params.composition)},
@@ -85,6 +86,8 @@ exports.addImage = async(req,res,next)=> {
                 cb(null,`userData/${req.userId}/${req.params.composition}`)
             },
             filename(req,file,cb){
+
+
                 const ext = file.mimetype.split('/')[1]
                 cb(null,`${newImage._id}.${ext}`)
             }

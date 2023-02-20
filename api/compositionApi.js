@@ -2,6 +2,9 @@ const express = require('express')
 const router = express.Router()
 const compositionController = require('../controllers/compositionController')
 
+const multer = require('multer')
+const multerParser = multer()
+
 router.post('/addImage/:composition',compositionController.addImage)
 router.post('/addComposition/',compositionController.addComposition)
 router.delete('/deleteComposition/:composition',compositionController.deleteComposition)

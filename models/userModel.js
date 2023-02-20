@@ -22,7 +22,7 @@ const ImageSchema = new mongoose.Schema({
     },
     order:{
         type:Number,
-        required: [true,'order place is required'],
+        //required: [true,'order place is required'],
         //unique:[true,"two photos cant be in same order"]
     },
     votes:{
@@ -31,15 +31,8 @@ const ImageSchema = new mongoose.Schema({
     },
     position:{
         type:Map,
-        of:{
-            x:{
-                type:Number
-            },
-            y:{
-                type:Number
-            }
-        },
-        //required: [true,'position is required']
+        of:Number,
+        required: [true,'position is required']
     }
 
 },{autoCreate:false})
