@@ -73,13 +73,8 @@ exports.deleteComposition = async (req,res,next)=>{
 
 exports.addImage = async(req,res,next)=> {
     try{
-        console.log(req.file)
-        const newImage = await new UserModel.Image({type:'image',position:{x:req.body.x,y:req.body.y}})
+        const newImageId = new mongoose.Types.ObjectId()
 
-        const updatedComp = await UserModel.User.findOneAndUpdate(
-            {_id: mongoose.Types.ObjectId(req.userId),'composition._id':mongoose.Types.ObjectId(req.params.composition)},
-            {$push: {'composition.$.images':newImage}},
-            {new:true/*,runValidators:true*/})
 
         const multerStorage = multer.diskStorage({
             destination(req,file,cb){
@@ -89,18 +84,32 @@ exports.addImage = async(req,res,next)=> {
 
 
                 const ext = file.mimetype.split('/')[1]
-                cb(null,`${newImage._id}.${ext}`)
+                cb(null,`${newImageId}.${ext}`)
             }
         })
-        const upload = multer({storage:multerStorage}).single('photo')
-        upload(req,res,err=>{
-            if(err) return next(new ErrorHandler(err,500))
-            res.status(201).json({
-                status:'success',
-                data:updatedComp
-            })
+        const upload = multer({storage:multerStorage}).fields([{name:'photo',maxCount:1},{name:'x',maxCount:1},{name:'y',maxCount:1}])
+        upload(req,res, async err=>{
 
+            if(err) {return next(new ErrorHandler(err,500))}
+
+            try {
+                const newImage = await new UserModel.Image({_id:newImageId,type:'image',position:{x:req.body.x,y:req.body.y}})
+
+                const updatedComp = await UserModel.User.findOneAndUpdate(
+                    {_id: mongoose.Types.ObjectId(req.userId),'composition._id':mongoose.Types.ObjectId(req.params.composition)},
+                    {$push: {'composition.$.images':newImage}},
+                    {new:true/*,runValidators:true*/})
+
+                res.status(201).json({
+                    status:'success',
+                    data:updatedComp
+                })
+            }catch (err){
+                return next(new ErrorHandler(err,400))
+            }
         })
+
+
     }catch (err){
         return next(new ErrorHandler(err,400))
     }
@@ -151,7 +160,7 @@ exports.changeImageOrder = async(req,res,next)=>{
 }
 exports.getOneComp = async(req,res,next)=>{
     try{
-        const imageList = await UserModel.User.find({_id:req.userId,'composition._id':mongoose.Types.ObjectId(req.params.composition)},
+        const imageList = await UserModel.User.findOne({_id:req.userId,'composition._id':mongoose.Types.ObjectId(req.params.composition)},
             {_id:0,'composition.$':1})
         res.status(200).json({
             status:'success',
