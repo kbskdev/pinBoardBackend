@@ -75,6 +75,7 @@ exports.addImage = async(req,res,next)=> {
     try{
         const newImageId = new mongoose.Types.ObjectId()
 
+        let ext = ""
 
         const multerStorage = multer.diskStorage({
             destination(req,file,cb){
@@ -83,7 +84,7 @@ exports.addImage = async(req,res,next)=> {
             filename(req,file,cb){
 
 
-                const ext = file.mimetype.split('/')[1]
+                ext = file.mimetype.split('/')[1]
                 cb(null,`${newImageId}.${ext}`)
             }
         })
@@ -93,7 +94,7 @@ exports.addImage = async(req,res,next)=> {
             if(err) {return next(new ErrorHandler(err,500))}
 
             try {
-                const newImage = await new UserModel.Image({_id:newImageId,type:'image',position:{x:req.body.x,y:req.body.y}})
+                const newImage = await new UserModel.Image({_id:newImageId,type:'image',extension:ext,position:{x:req.body.x,y:req.body.y}})
 
                 const updatedComp = await UserModel.User.findOneAndUpdate(
                     {_id: mongoose.Types.ObjectId(req.userId),'composition._id':mongoose.Types.ObjectId(req.params.composition)},

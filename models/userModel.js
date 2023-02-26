@@ -11,6 +11,9 @@ const ImageSchema = new mongoose.Schema({
     text:{
         type: String,
     },
+    extension:{
+        type:String
+    },
     title:{
         type:String,
     },
