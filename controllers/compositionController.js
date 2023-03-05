@@ -103,8 +103,9 @@ exports.addImage = async(req,res,next)=> {
 
                 res.status(201).json({
                     status:'success',
-                    data:updatedComp
+                    data:newImage
                 })
+                console.log(updatedComp)
             }catch (err){
                 return next(new ErrorHandler(err,400))
             }
@@ -159,6 +160,24 @@ exports.changeImageOrder = async(req,res,next)=>{
         return next(new ErrorHandler(err,400))
     }
 }
+
+exports.changeImagePosition = async(req,res,next)=>{
+    const imageId = `${req.params.image}`.split('.')[0]
+    try{
+        const updatedImage = await UserModel.User.findOneAndUpdate(
+            {_id: mongoose.Types.ObjectId(req.userId),'composition._id':mongoose.Types.ObjectId(req.params.composition)},
+            {$set:{'composition.$.images.$[img].position':{x:req.params.x,y:req.params.y}}},
+            {arrayFilters:[{'img._id':imageId}],projection:{'composition.$':1}})
+
+        res.status(200).json({
+            status:"success",
+            data:updatedImage
+        })
+    }catch (err){
+        return next(err,400)
+    }
+}
+
 exports.getOneComp = async(req,res,next)=>{
     try{
         const imageList = await UserModel.User.findOne({_id:req.userId,'composition._id':mongoose.Types.ObjectId(req.params.composition)},
