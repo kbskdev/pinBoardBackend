@@ -64,7 +64,7 @@ const UserSchema = new mongoose.Schema({
     email:{
         type:String,
         unique:[true,"that email is already used"],
-        required:[true,"email must be included"],
+        //required:[true,"email must be included"],
         validate:[validator.isEmail,'invalid email']
     },
     password:{

@@ -5,10 +5,10 @@ const bcrypt = require('bcrypt')
 
 exports.login = async(req,res,next)=>{
     try {
-        let user = await User.findOne({email: req.body.email}).select('-__v')
+        let user = await User.findOne({username: req.body.username}).select('-__v')
 
         const passwordCheck = await bcrypt.compare(req.body.password,user.password)
-        if(!passwordCheck) throw 'wrong password'
+        if(!passwordCheck) return next(new ErrorHandler('bad password',401))
 
         const token = await jwt.sign({id:user._id,username:user.username},process.env.JWT_SECRET,{expiresIn:process.env.JWT_EXPIRE })
         res.status(200).json({

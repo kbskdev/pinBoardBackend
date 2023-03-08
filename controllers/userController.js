@@ -4,7 +4,7 @@ const fs = require('fs')
 
 exports.addUser = async(req,res,next)=>{
     try{
-        const newUser = new Model.User({username:req.body.username,email:req.body.email,password:req.body.password})
+        const newUser = new Model.User({username:req.body.username,password:req.body.password})
         await fs.promises.mkdir(`./userData/${newUser._id}`)
         const newUserQuery = await Model.User.create(newUser)
         res.status(201).json({
