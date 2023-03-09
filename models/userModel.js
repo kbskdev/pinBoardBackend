@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const validator = require('validator')
 const bcrypt = require('bcrypt')
 
 const ImageSchema = new mongoose.Schema({
@@ -60,12 +59,6 @@ const UserSchema = new mongoose.Schema({
         type:String,
         unique:[true,"there is already user with that nick"],
         required:[true,"username must be included"]
-    },
-    email:{
-        type:String,
-        // unique:[true,"that email is already used"],
-        // //required:[true,"email must be included"],
-        // validate:[validator.isEmail,'invalid email']
     },
     password:{
         type:String,
