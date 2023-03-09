@@ -11,6 +11,7 @@ exports.addUser = async(req,res,next)=>{
             status:'success',
             data:newUserQuery
         })
+        next()
     }catch (err){
         next(new ErrorHandler(err,400))
     }
