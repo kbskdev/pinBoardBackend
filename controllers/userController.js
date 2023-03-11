@@ -1,12 +1,14 @@
 const Model = require('../models/userModel')
 const ErrorHandler = require('../common/ErrorHandler')
 const fs = require('fs')
+const mongoose = require("mongoose");
 
 exports.addUser = async(req,res,next)=>{
     try{
-        const newUser = new Model.User({username:req.body.username,password:req.body.password})
-        await fs.promises.mkdir(`./userData/${newUser._id}`)
-        const newUserQuery = await Model.User.create(newUser)
+        const newUserId = new mongoose.Types.ObjectId()
+
+        await fs.promises.mkdir(`./userData/${newUserId}`)
+        const newUserQuery = await Model.User.create({_id:newUserId,username:req.body.username,password:req.body.password})
         res.status(201).json({
             status:'success',
             data:newUserQuery

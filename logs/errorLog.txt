@@ -1,7 +1,0 @@
-
- Error: JsonWebTokenError: jwt malformed on:Fri Mar 10 2023 01:26:38 GMT+0100 (czas środkowoeuropejski standardowy)
- Error: JsonWebTokenError: jwt malformed on:Fri Mar 10 2023 01:26:44 GMT+0100 (czas środkowoeuropejski standardowy)
-
- Error: JsonWebTokenError: jwt malformed on:Fri Mar 10 2023 01:33:31 GMT+0100 (czas środkowoeuropejski standardowy)
- Error: JsonWebTokenError: jwt malformed on:Fri Mar 10 2023 01:33:40 GMT+0100 (czas środkowoeuropejski standardowy)
- Error: MongoError: E11000 duplicate key error collection: pinBoard.users index: email_1 dup key: { email: null } on:Fri Mar 10 2023 01:34:06 GMT+0100 (czas środkowoeuropejski standardowy)
