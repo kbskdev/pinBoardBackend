@@ -35,14 +35,14 @@ exports.addComposition= async(req,res,next)=>{
                     {new:true})
                 console.log(`problem with making directory, deleted: ${compBody._id}`)
                 console.log(errBody)
-                return next(new ErrorHandler(err,500))
+                return next(new ErrorHandler(req,err,500))
             }
         )
 
 
 
     }catch (err){
-        next(new ErrorHandler(err,400))
+        next(new ErrorHandler(req,err,400))
     }
 }
 
@@ -66,7 +66,7 @@ exports.deleteComposition = async (req,res,next)=>{
                 status:"success",
                 data:`composition ${req.params.composition} was deleted`
             })
-        }).catch(err=>{return next(new ErrorHandler(err,500))})
+        }).catch(err=>{return next(new ErrorHandler(req,err,500))})
     }
     catch (err){}
 }
@@ -91,7 +91,7 @@ exports.addImage = async(req,res,next)=> {
         const upload = multer({storage:multerStorage}).fields([{name:'photo',maxCount:1},{name:'x',maxCount:1},{name:'y',maxCount:1}])
         upload(req,res, async err=>{
 
-            if(err) {return next(new ErrorHandler(err,500))}
+            if(err) {return next(new ErrorHandler(req,err,500))}
 
             try {
                 const newImage = await new UserModel.Image({_id:newImageId,type:'image',extension:ext,position:{x:req.body.x,y:req.body.y}})
@@ -107,7 +107,7 @@ exports.addImage = async(req,res,next)=> {
                 })
                 console.log(updatedComp)
             }catch (err){
-                return next(new ErrorHandler(err,400))
+                return next(new ErrorHandler(req,err,400))
             }
         })
 
@@ -137,10 +137,10 @@ exports.deleteImage = async (req,res,next)=>{
                 status:"success",
                 data:`image ${req.params.composition}/${req.params.image} was deleted`
             })
-        }).catch(err=>{return next(new ErrorHandler(err,500))})
+        }).catch(err=>{return next(new ErrorHandler(req,err,500))})
     }
     catch (err){
-        return next(new ErrorHandler(err,400))
+        return next(new ErrorHandler(req,err,400))
     }
 }
 
@@ -157,7 +157,7 @@ exports.changeImageOrder = async(req,res,next)=>{
             data:updateImage
         })
     }catch (err){
-        return next(new ErrorHandler(err,400))
+        return next(new ErrorHandler(req,err,400))
     }
 }
 
@@ -174,7 +174,7 @@ exports.changeImagePosition = async(req,res,next)=>{
             data:updatedImage
         })
     }catch (err){
-        return next(err,400)
+        return next(new ErrorHandler(req,err,400))
     }
 }
 
@@ -187,7 +187,7 @@ exports.getOneComp = async(req,res,next)=>{
             data:imageList
         })
     }catch (err){
-        return next(new ErrorHandler(err,400))
+        return next(new ErrorHandler(req,err,400))
     }
 }
 exports.getCompositionList = async(req,res,next)=>{
@@ -198,13 +198,13 @@ exports.getCompositionList = async(req,res,next)=>{
             data:compositionList
         })
     }catch (err){
-        return next(new ErrorHandler(err,400))
+        return next(new ErrorHandler(req,err,400))
     }
 }
 exports.getImage = async(req,res,next)=>{
     try{
         res.sendFile(`./${req.userId}/${req.params.composition}/${req.params.image}`,{root:'userData'})
     }catch (err){
-        return next(new ErrorHandler(err,400))
+        return next(new ErrorHandler(req,err,400))
     }
 }

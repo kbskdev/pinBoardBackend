@@ -8,7 +8,7 @@ exports.login = async(req,res,next)=>{
         let user = await User.findOne({username: req.body.username}).select('-__v')
 
         const passwordCheck = await bcrypt.compare(req.body.password,user.password)
-        if(!passwordCheck) return next(new ErrorHandler('bad password',401))
+        if(!passwordCheck) return next(new ErrorHandler(req,'bad password',401))
 
         const token = await jwt.sign({id:user._id,username:user.username},process.env.JWT_SECRET,{expiresIn:process.env.JWT_EXPIRE })
         res.status(200).json({
@@ -17,7 +17,7 @@ exports.login = async(req,res,next)=>{
             token:token
         })
     }catch (err){
-        next(new ErrorHandler(err,401))
+        next(new ErrorHandler(req,err,401))
     }
 }
 
@@ -30,6 +30,6 @@ exports.authorize = async(req,res,next)=>{
         req.userUsername = decoded.username
         next()
     }catch (err){
-        next(new ErrorHandler(err,401))
+        next(new ErrorHandler(req,err,401))
     }
 }
