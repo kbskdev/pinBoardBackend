@@ -9,7 +9,7 @@ module.exports = async(err,req,res,next)=>{
         err:err.message
     })
 
-    fs.appendFile('./logs/errorLog.txt',`\n\n request:${err.request}\n ${err} on:${Date()}`,'utf-8',(err)=>{
+    fs.appendFile('./logs/errorLog.txt',`\n\n request:${err.request.url}\n ${err} on:${Date()}`,'utf-8',(err)=>{
         if(err) return console.log(err)
         console.log('error logged')
     })
