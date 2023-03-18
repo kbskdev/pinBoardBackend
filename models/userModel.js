@@ -31,7 +31,7 @@ const ImageSchema = new mongoose.Schema({
         required: [true,'position is required']
     },
     date:{
-        type:Date
+        type:String
     }
 
 },{autoCreate:false})

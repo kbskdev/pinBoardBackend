@@ -98,7 +98,7 @@ exports.addImage = async(req,res,next)=> {
             try {
                 const newImage = await new UserModel.Image(
                     {_id:newImageId,type:'image',extension:ext,position:{x:req.body.x,y:req.body.y},
-                          title:"req.body.title",date:req.body.date,description:req.body.description })
+                          title:req.body.title,date:req.body.date,description:req.body.description })
 
                 const updatedComp = await UserModel.User.findOneAndUpdate(
                     {_id: mongoose.Types.ObjectId(req.userId),'composition._id':mongoose.Types.ObjectId(req.params.composition)},
