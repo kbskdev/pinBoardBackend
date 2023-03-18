@@ -7,19 +7,13 @@ const ImageSchema = new mongoose.Schema({
         enum: ['image', 'text'],
         required: [true,'type is required']
     },
-    text:{
-        type: String,
-    },
     extension:{
         type:String
     },
     title:{
         type:String,
     },
-    subTitle:{
-        type:String,
-    },
-    note:{
+    description:{
         type:String,
     },
     order:{
@@ -35,6 +29,9 @@ const ImageSchema = new mongoose.Schema({
         type:Map,
         of:Number,
         required: [true,'position is required']
+    },
+    date:{
+        type:Date
     }
 
 },{autoCreate:false})

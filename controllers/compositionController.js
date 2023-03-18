@@ -88,13 +88,17 @@ exports.addImage = async(req,res,next)=> {
                 cb(null,`${newImageId}.${ext}`)
             }
         })
-        const upload = multer({storage:multerStorage}).fields([{name:'photo',maxCount:1},{name:'x',maxCount:1},{name:'y',maxCount:1}])
+        const upload = multer({storage:multerStorage}).fields([
+            {name:'photo',maxCount:1},{name:'x',maxCount:1},{name:'y',maxCount:1},
+            {name:'title',maxCount:1},{name:'date',maxCount:1},{name:'description',maxCount:1}])
         upload(req,res, async err=>{
 
             if(err) {return next(new ErrorHandler(req,err,500))}
 
             try {
-                const newImage = await new UserModel.Image({_id:newImageId,type:'image',extension:ext,position:{x:req.body.x,y:req.body.y}})
+                const newImage = await new UserModel.Image(
+                    {_id:newImageId,type:'image',extension:ext,position:{x:req.body.x,y:req.body.y},
+                          title:"req.body.title",date:req.body.date,description:req.body.description })
 
                 const updatedComp = await UserModel.User.findOneAndUpdate(
                     {_id: mongoose.Types.ObjectId(req.userId),'composition._id':mongoose.Types.ObjectId(req.params.composition)},
