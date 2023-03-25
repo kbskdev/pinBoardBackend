@@ -26,12 +26,17 @@ exports.isAuthor = async (req,res,next)=>{
         const token = authHeader && authHeader.split(' ')[1]
         const decoded = await jwt.verify(token, process.env.JWT_SECRET)
         const isAuthor = await User.findOne({'composition._id':req.body.composition,'composition.author':decoded.id},{_id:0 ,'composition.$':1})
+        if(isAuthor==null){
+            res.status(200).json({
+                status:false
+            })
+        }
         res.status(200).json({
-            status:'success',
-            tokenId:decoded.id,
-            data:isAuthor
+            status:true
         })
     }catch (err){
-        next(new ErrorHandler(req,err,401))
+        res.status(200).json({
+            status:false
+        })
     }
 }
