@@ -35,7 +35,7 @@ exports.authorize = async(req,res,next)=>{
 }
 exports.isAuthor = async (req,res,next)=>{
     try{
-        const isAuthor = User.findOne({composition:req.body.composition,'composition.$.author':req.body.author})
+        const isAuthor = User.findOne({composition:req.body.composition})
         res.status(200).json({
             status:'success',
             data:isAuthor
