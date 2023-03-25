@@ -49,6 +49,11 @@ const CompositionSchema = new mongoose.Schema({
     },
     tags:[String],
     images:[ImageSchema],
+    public:{
+        type:String,
+        enum:['public','private'],
+        default:'private'
+    },
     author:{
         type:String,
         required:[true,'author is required']

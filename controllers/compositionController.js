@@ -16,7 +16,7 @@ const mongoose = require('mongoose')
 
 exports.addComposition= async(req,res,next)=>{
     try{
-        const compBody = await new UserModel.Composition({name:req.body.name,tags:req.body.tags,author:req.userId})
+        const compBody = await new UserModel.Composition({name:req.body.name,tags:req.body.tags,author:req.userId,public:req.body.public})
 
         const newComp = await UserModel.User.findByIdAndUpdate(req.userId,
             {$push:{composition:compBody}},
@@ -194,6 +194,20 @@ exports.getOneComp = async(req,res,next)=>{
         return next(new ErrorHandler(req,err,400))
     }
 }
+
+exports.getOneCompPublic = async(req,res,next)=>{
+    try{
+        const imageList = await UserModel.User.findOne({_id:req.userId,'composition._id':mongoose.Types.ObjectId(req.params.composition),'composition.$.public':'public'},
+            {_id:0,'composition.$':1})
+        res.status(200).json({
+            status:'success',
+            data:imageList
+        })
+    }catch (err){
+        return next(new ErrorHandler(req,err,400))
+    }
+}
+
 exports.getCompositionList = async(req,res,next)=>{
     try{
         const compositionList = await UserModel.User.findOne({_id:req.userId}).select('-__v')
