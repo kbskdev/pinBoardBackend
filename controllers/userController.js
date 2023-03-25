@@ -21,7 +21,7 @@ exports.addUser = async(req,res,next)=>{
 }
 exports.isAuthor = async (req,res,next)=>{
     try{
-        const isAuthor = await User.findOne({'composition._id':req.body.composition})
+        const isAuthor = await User.findOne({'composition.$[id].author':req.body.author},{},{arrayFilters:[{'id._id':req.body.composition}]})
         res.status(200).json({
             status:'success',
             data:isAuthor
