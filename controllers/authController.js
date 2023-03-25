@@ -33,14 +33,4 @@ exports.authorize = async(req,res,next)=>{
         next(new ErrorHandler(req,err,401))
     }
 }
-exports.isAuthor = async (req,res,next)=>{
-    try{
-        const isAuthor = User.findOne({'composition._id':"640cf2965adfbaa424446869"})
-        res.status(200).json({
-            status:'success',
-            data:isAuthor
-        })
-    }catch (err){
-        next(new ErrorHandler(req,err,401))
-    }
-}
+

@@ -18,3 +18,14 @@ exports.addUser = async(req,res,next)=>{
         next(new ErrorHandler(req,err,400))
     }
 }
+exports.isAuthor = async (req,res,next)=>{
+    try{
+        const isAuthor = "el"
+        res.status(200).json({
+            status:'success',
+            data:isAuthor
+        })
+    }catch (err){
+        next(new ErrorHandler(req,err,400))
+    }
+}
