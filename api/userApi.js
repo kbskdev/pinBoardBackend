@@ -5,6 +5,6 @@ const UserController = require('../controllers/userController')
 
 
 router.post('/register/',UserController.addUser)
-router.get('/isAuthor/', UserController.isAuthor)
+router.get('/isAuthor/:composition', UserController.isAuthor)
 
 module.exports = router
