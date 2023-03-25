@@ -5,7 +5,7 @@ const ErrorHandler = require('./common/ErrorHandler')
 const authController = require("./controllers/authController");
 const requestLogger = require("./controllers/requestLogger")
 
-const getOneCompPublic = require("./controllers/compositionController").getOneCompPublic()
+const compositionController = require("./controllers/compositionController")
 
 app = express()
 app.use(express.json())
@@ -13,7 +13,7 @@ app.use(express.json())
 app.use(cors())
 app.use('/api/v1/users/login/',requestLogger,authController.login)
 app.use('/api/v1/users/',requestLogger,require('./api/userApi'))
-app.use('/api/v1/images/getOneCompPublic/:composition',(req,res,next)=>getOneCompPublic)
+app.use('/api/v1/images/getOneCompPublic/:composition/',compositionController.getOneCompPublic)
 app.use('/api/v1/images/',authController.authorize,requestLogger,require('./api/compositionApi'))
 app.all('*',(req,res,next)=>{next(new ErrorHandler(req,'bad route',404))})
 
