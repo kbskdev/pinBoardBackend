@@ -16,7 +16,7 @@ const mongoose = require('mongoose')
 
 exports.addComposition= async(req,res,next)=>{
     try{
-        const compBody = await new UserModel.Composition({name:req.body.name,tags:req.body.tags})
+        const compBody = await new UserModel.Composition({name:req.body.name,tags:req.body.tags,author:req.userId})
 
         const newComp = await UserModel.User.findByIdAndUpdate(req.userId,
             {$push:{composition:compBody}},

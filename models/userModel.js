@@ -32,6 +32,10 @@ const ImageSchema = new mongoose.Schema({
     },
     date:{
         type:String
+    },
+    author:{
+        type:String,
+        required:[true,'author is required']
     }
 
 },{autoCreate:false})
