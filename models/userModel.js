@@ -32,11 +32,8 @@ const ImageSchema = new mongoose.Schema({
     },
     date:{
         type:String
-    },
-    author:{
-        type:String,
-        required:[true,'author is required']
     }
+
 
 },{autoCreate:false})
 
@@ -51,7 +48,11 @@ const CompositionSchema = new mongoose.Schema({
         default: 0
     },
     tags:[String],
-    images:[ImageSchema]
+    images:[ImageSchema],
+    author:{
+        type:String,
+        required:[true,'author is required']
+    }
 
 },{autoCreate:false})
 
