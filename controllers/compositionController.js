@@ -147,7 +147,6 @@ exports.deleteImage = async (req,res,next)=>{
         return next(new ErrorHandler(req,err,400))
     }
 }
-
 exports.changeImageOrder = async(req,res,next)=>{
     const imageId = `${req.params.image}`.split('.')[0]
     try{
@@ -194,20 +193,6 @@ exports.getOneComp = async(req,res,next)=>{
         return next(new ErrorHandler(req,err,400))
     }
 }
-
-exports.getOneCompPublic = async(req,res,next)=>{
-    try{
-        const imageList = await UserModel.User.findOne({'composition._id':req.params.composition,'composition.public':"public"},
-            {_id:0,'composition.$':1})
-        res.status(200).json({
-            status:'success',
-            data:imageList
-        })
-    }catch (err){
-        return next(new ErrorHandler(req,err,400))
-    }
-}
-
 exports.getCompositionList = async(req,res,next)=>{
     try{
         const compositionList = await UserModel.User.findOne({_id:req.userId}).select('-__v')
