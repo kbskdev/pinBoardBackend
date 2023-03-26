@@ -6,7 +6,7 @@ exports.getPublicCompList = async(req,res,next)=>{
         const compositionList = await UserModel.User.aggregate([{$match:{_id:req.params.user}}])
         res.status(200).json({
             status:'success',
-            data:compositionList
+            data:req.params.user
         })
     }catch (err){
         return next(new ErrorHandler(req,err,400))
