@@ -3,7 +3,7 @@ const UserModel = require('../models/userModel')
 
 exports.getPublicCompList = async(req,res,next)=>{
     try{
-        const compositionList = await UserModel.User.aggregate([{$match:{_id:req.params.user}}])
+        const compositionList = await UserModel.User.aggregate()
         res.status(200).json({
             status:'success',
             data:compositionList
