@@ -1,6 +1,5 @@
 const ErrorHandler = require('../common/ErrorHandler')
 const UserModel = require('../models/userModel')
-const mongoose = require("mongoose");
 
 exports.getPublicCompList = async(req,res,next)=>{
     try{
@@ -16,7 +15,7 @@ exports.getPublicCompList = async(req,res,next)=>{
 
 exports.getOneCompPublic = async(req,res,next)=>{
     try{
-        const imageList = await UserModel.User.findById(req.params.user,{_id:0,composition:{$elemMatch:{_id:req.params.composition,public:"public"}}})
+        const imageList = await UserModel.User.findById(req.params.user,{_id:0,composition:{$elemMatch:{_id:req.params.composition,public:"private"}}})
         res.status(200).json({
             status:'success',
             data:imageList
