@@ -16,7 +16,7 @@ exports.getPublicCompList = async(req,res,next)=>{
 exports.getOneCompPublic = async(req,res,next)=>{
     try{
         const imageList = await UserModel.User.find({_id:req.params.user,'composition.public':"public"},
-            {_id:0,'composition':1})
+            {_id:0,'composition.$':1})
         res.status(200).json({
             status:'success',
             data:imageList
