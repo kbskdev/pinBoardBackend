@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 
 exports.getPublicCompList = async(req,res,next)=>{
     try{
-        const compositionList = await UserModel.User.find({_id:req.params.user},{composition:{$elemMatch: {public: "public"}}}).select('-__v')
+        const compositionList = await UserModel.User.find({_id:req.params.user},{$elemMatch: {composition:{public: "public"}}}).select('-__v')
         res.status(200).json({
             status:'success',
             data:compositionList
