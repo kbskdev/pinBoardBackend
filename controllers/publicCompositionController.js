@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 
 exports.getPublicCompList = async(req,res,next)=>{
     try{
-        const compositionList = await UserModel.User.aggregate([{$match:{_id:mongoose.Types.ObjectId(req.params.user)}},{$projection:{'composition.$':1}}])
+        const compositionList = await UserModel.User.aggregate([{$match:{_id:mongoose.Types.ObjectId(req.params.user)}},{$project:{'composition.$':1}}])
         res.status(200).json({
             status:'success',
             data:compositionList
