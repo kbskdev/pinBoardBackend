@@ -3,7 +3,7 @@ const UserModel = require('../models/userModel')
 
 exports.getPublicCompList = async(req,res,next)=>{
     try{
-        const compositionList = await UserModel.User.findById({_id:req.params.user},{composition:{$all:{$elemMatch: {public: "public"}}}}).select('-__v')
+        const compositionList = await UserModel.User.findById({_id:req.params.user},{composition:{$all:[{$elemMatch: {public: "public"}}]}}).select('-__v')
         res.status(200).json({
             status:'success',
             data:compositionList
