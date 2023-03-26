@@ -16,8 +16,7 @@ exports.getPublicCompList = async(req,res,next)=>{
 
 exports.getOneCompPublic = async(req,res,next)=>{
     try{
-        const imageList = await UserModel.User.findOne({_id:req.params.user,'composition._id':mongoose.Types.ObjectId(req.params.composition)},
-            {_id:0,'composition.$':1})
+        const imageList = await UserModel.User.findById(req.params.user,{_id:0,composition:{$elemMatch:{_id:req.params.composition,public:"public"}}})
         res.status(200).json({
             status:'success',
             data:imageList
