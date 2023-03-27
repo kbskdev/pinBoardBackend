@@ -30,18 +30,20 @@ exports.getPublicCompList = async(req,res,next)=>{
 exports.getOneCompPublic = async(req,res,next)=>{
     try{
         const imageList = await UserModel.User.findById(req.params.user,{_id:0,composition:{$elemMatch:{_id:req.params.composition,public:"public"}}})
+        imageList.count(recordsNumber=>{
+            if(recordsNumber == 0){
+                res.status(200).json({
+                    status:'not public'
+                })
+            }
+            else {
+                res.status(200).json({
+                    status: 'success',
+                    data: imageList
+                })
+            }
+        })
 
-        if(imageList == null){
-            res.status(200).json({
-                status:'not public'
-            })
-        }
-        else {
-            res.status(200).json({
-                status: 'success',
-                data: imageList
-            })
-        }
     }catch (err){
         return next(new ErrorHandler(req,err,400))
     }
