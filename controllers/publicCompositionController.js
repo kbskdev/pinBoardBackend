@@ -29,7 +29,7 @@ exports.getPublicCompList = async(req,res,next)=>{
 
 exports.getOneCompPublic = async(req,res,next)=>{
     try{
-        const imageList = await UserModel.User.find({username:"kracepek@interia.pl"})
+        const imageList = await UserModel.User.find({username:req.params.user},{_id:0,composition:{$elemMatch:{_id:req.params.composition,public:"public"}}})
 
         res.status(200).json({
             status:'success',
