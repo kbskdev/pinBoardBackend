@@ -2,6 +2,19 @@ const ErrorHandler = require('../common/ErrorHandler')
 const UserModel = require('../models/userModel')
 const mongoose = require("mongoose");
 
+
+// exports.isPublic = async(req,res,next)=>{
+//     try{
+//         const imageList = await UserModel.User.findById(req.params.user,{_id:0,composition:{$elemMatch:{_id:req.params.composition,public:"public"}}})
+//         res.status(200).json({
+//             status:'success',
+//             data:imageList
+//         })
+//     }catch (err){
+//         return next(new ErrorHandler(req,err,400))
+//     }
+// }
+
 exports.getPublicCompList = async(req,res,next)=>{
     try{
         const compositionList = await UserModel.User.aggregate([{$unwind:"$composition"},{$match:{'composition.public':'public',_id:mongoose.Types.ObjectId(req.params.user)}},{$project:{_id:0,composition:'$composition'}}])
@@ -17,10 +30,18 @@ exports.getPublicCompList = async(req,res,next)=>{
 exports.getOneCompPublic = async(req,res,next)=>{
     try{
         const imageList = await UserModel.User.findById(req.params.user,{_id:0,composition:{$elemMatch:{_id:req.params.composition,public:"public"}}})
-        res.status(200).json({
-            status:'success',
-            data:imageList
-        })
+
+        if(imageList == null){
+            res.status(200).json({
+                status:'not public'
+            })
+        }
+        else {
+            res.status(200).json({
+                status: 'success',
+                data: imageList
+            })
+        }
     }catch (err){
         return next(new ErrorHandler(req,err,400))
     }
