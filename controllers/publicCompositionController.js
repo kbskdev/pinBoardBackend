@@ -29,7 +29,7 @@ exports.getPublicCompList = async(req,res,next)=>{
 
 exports.getOneCompPublic = async(req,res,next)=>{
     try{
-        const imageList = await UserModel.User.find({username:req.params.user},{_id:0,composition:{$elemMatch:{_id:req.params.composition,public:"public"}}})
+        const imageList = await UserModel.User.find({_id:req.params.user},{_id:0,composition:{$elemMatch:{_id:req.params.composition,public:"public"}}})
 
         res.status(200).json({
             status:'success',
@@ -40,8 +40,9 @@ exports.getOneCompPublic = async(req,res,next)=>{
     }
 }
 exports.getImagePublic = async(req,res,next)=>{
+
     try{
-        const imageList = await UserModel.User.findOne({username:'test','composition._id':req.params.composition},
+        const imageList = await UserModel.User.findOne({_id:req.params.user,'composition._id':req.params.composition},
             {_id:0,'composition.$':1})
         if(imageList!=null){
             res.sendFile(`./${req.params.user}/${req.params.composition}/${req.params.image}`,{root:'userData'})
