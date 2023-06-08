@@ -30,6 +30,16 @@ const ImageSchema = new mongoose.Schema({
         of:Number,
         required: [true,'position is required']
     },
+    originalSize:{
+        type:Map,
+        of:Number,
+        required: [true,'size is required']
+    },
+    currentSize:{
+        type:Map,
+        of:Number,
+        required: [true,'current size is required']
+    },
     date:{
         type:String
     }
