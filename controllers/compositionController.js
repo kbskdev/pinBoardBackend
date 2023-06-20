@@ -4,15 +4,7 @@ const UserModel = require('../models/userModel')
 const fs = require('fs')
 const mongoose = require('mongoose')
 const sizeOf = require('image-size')
-// const multerStorage = multer.diskStorage({
-//     destination(req,file,cb){
-//         cb(null,`userData/${req.userId}/`)
-//     },
-//     filename(req,file,cb){
-//         const ext = file.mimetype.split('/')[1]
-//         cb(null,`zdjecie.${ext}`)
-//     }
-// })
+
 
 exports.addComposition= async(req,res,next)=>{
     try{
@@ -232,8 +224,25 @@ exports.changeImageSize = async (req,res,next)=>{
     }
 }
 
+exports.changeImageInfo = async (req,res,next)=> {
+    const imageId = `${req.params.image}`.split(".")[0]
+    try{
+        const updatedImage = await UserModel.User.findOneAndUpdate(
+            {_id:mongoose.Types.ObjectId(req.userId),'composition._id':mongoose.Types.ObjectId(req.params.composition)},
+            {$set:{'composition.$.images.$[img].title':req.body.title, 'composition.$.images.$[img].date':req.body.date, 'composition.$.images.$[img].description':req.body.description}},
+            {arrayFilters:[{'img._id':imageId}],projection:{'composition.$':1}}
+        )
 
-exports.getImage = async(req,res,next)=>{
+        res.status(200).json({
+            status: "success",
+            data: updatedImage
+        })
+    }catch (err){
+        return next(new ErrorHandler(req,err,400))
+    }
+}
+
+exports.getImage = async(req,res,next)=> {
     try{
         res.sendFile(`./${req.userId}/${req.params.composition}/${req.params.image}`,{root:'userData'})
     }catch (err){
