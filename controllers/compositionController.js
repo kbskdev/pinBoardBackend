@@ -8,7 +8,8 @@ const sizeOf = require('image-size')
 
 exports.addComposition= async(req,res,next)=>{
     try{
-        const compBody = await new UserModel.Composition({name:req.body.name,tags:req.body.tags,author:req.userId,public:req.body.public})
+        const compBody = await new UserModel.Composition({
+            name:req.body.name,tags:req.body.tags,author:req.userId,public:req.body.public})
 
         const newComp = await UserModel.User.findByIdAndUpdate(req.userId,
             {$push:{composition:compBody}},

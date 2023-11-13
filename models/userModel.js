@@ -67,9 +67,22 @@ const CompositionSchema = new mongoose.Schema({
     author:{
         type:String,
         required:[true,'author is required']
-    }
+    },
+    admin_password:{type:String,default:""},
+    public_password:{type:String,default:""},
 
 },{autoCreate:false})
+
+const SavedBoards = new mongoose.Schema({
+    author:{
+        type:String,
+        required:[true,"author is required"]
+    },
+    board_id:{
+        type:String,
+        required:[true,"author is required"]
+    }
+})
 
 const UserSchema = new mongoose.Schema({
     username:{
@@ -87,7 +100,9 @@ const UserSchema = new mongoose.Schema({
         select:false,
         enum:['normal','admin']
     },
-    composition:[CompositionSchema]
+    composition:[CompositionSchema],
+    savedBoards:[SavedBoards],
+    observed_users:[String]
 },{autoCreate:false})
 
 

@@ -15,7 +15,19 @@ const mongoose = require("mongoose");
 //     }
 // }
 
-exports.getPublicCompList = async(req,res,next)=>{
+exports.getFullPublicCompList = async(req,res,next)=>{
+    try{
+        const compositionList = await UserModel.User.aggregate([{$unwind:"$composition"},{$match:{'composition.public':'public'}},{$project:{_id:0,composition:'$composition'}}])
+        res.status(200).json({
+            status:'success',
+            data:compositionList
+        })
+    }catch (err){
+        return next(new ErrorHandler(req,err,400))
+    }
+}
+
+exports.getPublicCompListByUser = async(req,res,next)=>{
     try{
         const compositionList = await UserModel.User.aggregate([{$unwind:"$composition"},{$match:{'composition.public':'public',_id:mongoose.Types.ObjectId(req.params.user)}},{$project:{_id:0,composition:'$composition'}}])
         res.status(200).json({
