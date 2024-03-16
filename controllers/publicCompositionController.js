@@ -55,7 +55,7 @@ exports.getOneCompPublic = async(req,res,next)=>{
 exports.getImagePublic = async(req,res,next)=>{
 
     try{
-        const imageList = await UserModel.User.findOne({_id:req.params.user,'composition._id':req.params.composition},
+        const imageList = await UserModel.User.findOne({'composition._id':req.params.composition},
             {_id:0,'composition.$':1})
         if(imageList!=null){
             res.sendFile(`./${req.params.user}/${req.params.composition}/${req.params.image}`,{root:'userData'})
